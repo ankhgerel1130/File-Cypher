@@ -87,3 +87,11 @@ async function decryptAndDisplay() {
         alert('Decryption failed. Please check the console for more details.');
     }
 }
+
+function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        // Toggle the visibility of the selected section
+        section.style.display = section.style.display === 'block' ? 'none' : 'block';
+    }
+}
