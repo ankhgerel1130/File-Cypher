@@ -6,29 +6,13 @@
     <title>File & Folder Encryption</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@600&family=Rubik:wght@700&display=swap" rel="stylesheet">
-
-    <style>
-        /* Password Strength Indicator */
-        .strength-indicator {
-            display: inline-block;
-            margin-left: 10px;
-            font-weight: bold;
-        }
-        .weak {
-            color: red;
-        }
-        .moderate {
-            color: orange;
-        }
-        .strong {
-            color: green;
-        }
-    </style>
 </head>
 <body>
     <!-- Header -->
+   
+
+    <!-- Clickable Headings -->
     <div class="main-container">
-        <!-- Image Section -->
         <h3 class="toggle-heading" onclick="toggleSection('imageSection')">Image Encryption/Decryption</h3>
         <div id="imageSection" class="hidden">
             <div class="container">
@@ -36,8 +20,7 @@
                     <h5>Image Encryption</h5>
                     <input class="inp" type="file" id="imageInput1" accept="image/*">
                     <label>Key:</label>
-                    <input type="password" id="encryptionKey" oninput="checkPasswordStrength(this, 'imageKeyStrength')">
-                    <span id="imageKeyStrength" class="strength-indicator"></span>
+                    <input type="text" id="encryptionKey">
                     <button class="btn" onclick="encryptAndDownload()">Encrypt</button>
                 </article>  
 
@@ -45,14 +28,12 @@
                     <h5>Image Decryption</h5>
                     <input class="inp" type="file" id="imageInput2" accept="image/*">
                     <label>Key:</label>
-                    <input type="password" id="decryptionKey" oninput="checkPasswordStrength(this, 'imageDecKeyStrength')">
-                    <span id="imageDecKeyStrength" class="strength-indicator"></span>
+                    <input type="text" id="decryptionKey">
                     <button class="btn" onclick="decryptAndDisplay()">Decrypt</button>
                 </article>
             </div>
         </div>
 
-        <!-- File Section -->
         <h3 class="toggle-heading" onclick="toggleSection('fileSection')">File Encryption/Decryption</h3>
         <div id="fileSection" class="hidden">
             <div class="container">
@@ -60,8 +41,7 @@
                     <h5>File Encryption</h5>
                     <input class="inp" type="file" id="fileInput1">
                     <label>Key:</label>
-                    <input type="password" id="fileEncryptionKey" oninput="checkPasswordStrength(this, 'fileEncKeyStrength')">
-                    <span id="fileEncKeyStrength" class="strength-indicator"></span>
+                    <input type="text" id="fileEncryptionKey">
                     <button class="btn" onclick="encryptFile()">Encrypt File</button>
                 </article>
 
@@ -69,81 +49,45 @@
                     <h5>File Decryption</h5>
                     <input class="inp" type="file" id="fileInput2">
                     <label>Key:</label>
-                    <input type="password" id="fileDecryptionKey" oninput="checkPasswordStrength(this, 'fileDecKeyStrength')">
-                    <span id="fileDecKeyStrength" class="strength-indicator"></span>
+                    <input type="text" id="fileDecryptionKey">
                     <button class="btn" onclick="decryptFile()">Decrypt File</button>
                 </article>
             </div>
         </div>
 
-        <!-- Folder Section -->
         <h3 class="toggle-heading" onclick="toggleSection('folderSection')">Folder Encryption/Decryption</h3>
         <div id="folderSection" class="hidden">
             <div class="container">
+                <!-- Encryption Section -->
                 <article class="folder-enc">
                     <h5>Folder or ZIP File Encryption</h5>
+        
+                    <!-- Unified Input for Folders and ZIP Files -->
                     <label>Select Folder(s) or ZIP File(s):</label>
                     <input type="file" id="folderZipInput" multiple webkitdirectory accept=".zip,">
+        
+                    <!-- Key Input -->
                     <label>Key:</label>
-                    <input type="password" id="folderEncryptionKey" oninput="checkPasswordStrength(this, 'folderEncKeyStrength')">
-                    <span id="folderEncKeyStrength" class="strength-indicator"></span>
+                    <input type="text" id="folderEncryptionKey" placeholder="Enter Encryption Key">
+        
+                    <!-- Encrypt Button -->
                     <button class="btn" onclick="encryptFolderOrZip()">Encrypt</button>
                 </article>
-
+        
+                <!-- Decryption Section -->
                 <article class="folder-dec">
                     <h5>Folder or ZIP File Decryption</h5>
-                    <label>Select Encrypted Folder(s) or ZIP File(s):</label>
-                    <input type="file" id="folderZipInputDecrypt" multiple webkitdirectory accept=".zip,">
+                    <label>Select Encrypted ZIP File:</label>
+                    <input type="file" id="folderZipInputDecrypt" accept=".zip">
                     <label>Key:</label>
-                    <input type="password" id="folderDecryptionKey" oninput="checkPasswordStrength(this, 'folderDecKeyStrength')">
-                    <span id="folderDecKeyStrength" class="strength-indicator"></span>
+                    <input type="text" id="folderDecryptionKey" placeholder="Enter Decryption Key">
                     <button class="btn" onclick="decryptFolderOrZip()">Decrypt</button>
                 </article>
-            </div>
-        </div>
-    </div>
-
-    <!-- Libraries -->
+                
+        
+        
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-    <script>
-        function toggleSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.style.display = section.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Password Strength Checker
-        function checkPasswordStrength(input, indicatorId) {
-            const strengthIndicator = document.getElementById(indicatorId);
-            const value = input.value;
-
-            if (!value) {
-                strengthIndicator.textContent = '';
-                strengthIndicator.className = 'strength-indicator';
-                return;
-            }
-
-            let strength = 0;
-
-            // Password strength rules
-            if (value.length >= 8) strength++;
-            if (/[A-Z]/.test(value)) strength++;
-            if (/[a-z]/.test(value)) strength++;
-            if (/\d/.test(value)) strength++;
-            if (/[@$!%*?&]/.test(value)) strength++;
-
-            // Update indicator
-            if (strength <= 2) {
-                strengthIndicator.textContent = 'Weak';
-                strengthIndicator.className = 'strength-indicator weak';
-            } else if (strength <= 4) {
-                strengthIndicator.textContent = 'Moderate';
-                strengthIndicator.className = 'strength-indicator moderate';
-            } else {
-                strengthIndicator.textContent = 'Strong';
-                strengthIndicator.className = 'strength-indicator strong';
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
