@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #14171A;
+    }
+    .login-container {
+      margin-top: 0px;
+      text-align: center;
+      background-color: #ffffff;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    .form-container {
+      margin-top: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px;
+      font-size: 1em;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .separator {
+      margin: 20px 0;
+      font-size: 0.9em;
+      color: #555;
+    }
+    .toggle-link {
+      cursor: pointer;
+      color: #007BFF;
+    }
+    .toggle-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h2>Login Page</h2>
+
+    <!-- Google Sign-In Button -->
+    <div id="g_id_onload"
+         data-client_id="463492419006-q9n3qb26tkm8f9amvvbniv2v95r3scrk.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+    <div class="separator">OR</div>
+
+    <!-- Manual Login Form -->
+    <div class="form-container" id="login-form-container">
+      <form id="login-form" action="http://localhost:5000/login" method="POST">
+        <h3>Login with Google</h3>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+
+    <div class="separator">Don't have an account? <span class="toggle-link" onclick="toggleForms()">Register below</span>.</div>
+
+    <!-- Registration Form -->
+    <div class="form-container" id="register-form-container" style="display: none;">
+      <form id="register-form" action="http://localhost:5000/register" method="POST">
+        <h3>Register</h3>
+        <input type="text" name="firstName" placeholder="First Name" required>
+        <input type="text" name="lastName" placeholder="Last Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    // Callback function for handling the credential response
+    function handleCredentialResponse(response) {
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+
+      // Store user info in localStorage
+      localStorage.setItem('userEmail', payload.email);
+      localStorage.setItem('userPicture', payload.picture);
+
+      // Redirect to page.html
+      window.location.href = "page.html";
+    }
+
+    // Login form submission
+    document.getElementById("login-form").addEventListener("submit", async (event) => {
+      event.preventDefault(); // Prevent form submission
+
+      const email = event.target.email.value;
+      const password = event.target.password.value;
+
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Login successful!");
+        localStorage.setItem("token", result.token); // Save token to localStorage for session management
+        window.location.href = "page.html";  // Redirect to home.html on success
+      } else {
+        alert(result.error || "Login failed. Please try again.");
+      }
+    });
+
+    // Registration form submission
+    document.getElementById("register-form").addEventListener("submit", async (event) => {
+      event.preventDefault(); // Prevent form submission
+
+      const firstName = event.target.firstName.value;
+      const lastName = event.target.lastName.value;
+      const email = event.target.email.value;
+      const password = event.target.password.value;
+
+      const response = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("Registration successful!");
+        window.location.href = "page.html"; 
+
+      } else {
+        alert(result.error || "Registration failed. Please try again.");
+      }
+    });
+
+    // Toggle between login and registration forms
+    function toggleForms() {
+      const loginForm = document.getElementById('login-form-container');
+      const registerForm = document.getElementById('register-form-container');
+
+      if (loginForm.style.display === "none") {
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+      } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+      }
+    }
+  </script>
+
+</body>
+</html>
