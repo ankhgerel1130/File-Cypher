@@ -89,6 +89,89 @@ async function decryptAndDisplay() {
 }
 
 
+// Encrypt File
+async function encryptFile() {
+    const fileInput = document.getElementById('fileInput1');
+    const encryptionKeyInput = document.getElementById('fileEncryptionKey');
+
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0 || !encryptionKeyInput.value) {
+        alert('Please select a file and enter an encryption key.');
+        return;
+    }
+
+    try {
+        const fileArrayBuffer = await fileInput.files[0].arrayBuffer();
+        const encryptionKey = await textTo256BitKey(encryptionKeyInput.value);
+        const encryptionIv = crypto.getRandomValues(new Uint8Array(12));
+
+        // Store IV in localStorage
+        localStorage.setItem('fileEncryptionIv', JSON.stringify(Array.from(encryptionIv)));
+
+        const encryptedBuffer = await crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv: encryptionIv },
+            encryptionKey,
+            fileArrayBuffer
+        );
+
+        const encryptedBlob = new Blob([encryptedBuffer], { type: 'application/octet-stream' });
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(encryptedBlob);
+        downloadLink.download = 'encrypted_file';
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    } catch (error) {
+        console.error('Encryption failed:', error);
+        alert('Encryption failed. Please check the console for more details.');
+    }
+}
+
+// Decrypt File
+async function decryptFile() {
+    const fileInput = document.getElementById('fileInput2');
+    const decryptionKeyInput = document.getElementById('fileDecryptionKey');
+
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0 || !decryptionKeyInput.value) {
+        alert('Please select a file and enter a decryption key.');
+        return;
+    }
+
+    try {
+        const encryptedFileArrayBuffer = await fileInput.files[0].arrayBuffer();
+        const decryptionKey = await textTo256BitKey(decryptionKeyInput.value);
+
+        // Retrieve IV from localStorage
+        const storedEncryptionIv = localStorage.getItem('fileEncryptionIv');
+        const encryptionIv = storedEncryptionIv ? new Uint8Array(JSON.parse(storedEncryptionIv)) : null;
+
+        if (!encryptionIv || encryptionIv.length !== 12) {
+            console.error('Invalid IV or IV length.');
+            alert('Invalid IV or IV length. Unable to decrypt.');
+            return;
+        }
+
+        const decryptedBuffer = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: encryptionIv },
+            decryptionKey,
+            encryptedFileArrayBuffer
+        );
+
+        const decryptedBlob = new Blob([decryptedBuffer], { type: 'application/octet-stream' });
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(decryptedBlob);
+        downloadLink.download = 'decrypted_file';
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    } catch (error) {
+        console.error('Decryption failed:', error);
+        alert('Decryption failed. Please check the console for more details.');
+    }
+}
+
 //File 
 function toggleSection(sectionId) {
     const section = document.getElementById(sectionId);
@@ -97,6 +180,7 @@ function toggleSection(sectionId) {
         section.style.display = section.style.display === 'block' ? 'none' : 'block';
     }
 }
+
 async function encryptFolderOrZip() {
     const input = document.getElementById('folderZipInput');
     const encryptionKeyInput = document.getElementById('folderEncryptionKey');
