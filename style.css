@@ -9,7 +9,8 @@
 }
 
 body {
-    background: #f4f7fa;
+    margin-top: 10%;
+    background: #EEEEEE; /* Light gray background */
     color: #333;
     line-height: 1.5;
     font-size: 16px;
@@ -17,11 +18,11 @@ body {
 
 /* Header Styling */
 header {
-    background-color: #222;
+    background-color: #222831; /* Dark grayish blue */
     color: white;
     padding: 40px 0;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 header .logo p {
@@ -43,15 +44,15 @@ header h1 {
 .main-container {
     max-width: 960px;
     margin: 40px auto;
-    background: #fff;
+    background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
     padding: 30px;
 }
 
 /* Section Headings */
 .toggle-heading {
-    background-color: #4f85f1;
+    background-color: #393E46; /* Medium grayish blue */
     color: white;
     padding: 16px;
     font-size: 20px;
@@ -63,7 +64,7 @@ header h1 {
 }
 
 .toggle-heading:hover {
-    background-color: #3d6ad6;
+    background-color: #405DE6; /* Updated to Blue */
 }
 
 /* Hidden Sections */
@@ -80,33 +81,33 @@ header h1 {
 
 /* Article Styling */
 article {
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
     width: 45%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     margin-bottom: 20px;
 }
 
 article:hover {
     transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 article h5 {
     font-size: 22px;
-    color: #4f85f1;
+    color: #222831; /* Dark grayish blue */
     font-weight: 600;
     margin-bottom: 16px;
 }
 
 /* Form Elements */
 label {
-    font-size: 14px;
+    font-size: 25px;
     font-weight: 600;
-    margin-bottom: 8px;
-    color: #777;
+    margin-top: 15px;
+    color: #393E46; /* Medium grayish blue */
 }
 
 input[type="file"],
@@ -116,20 +117,20 @@ input[type="text"] {
     margin-top: 8px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #EEEEEE; /* Light gray background */
     font-size: 16px;
     transition: border-color 0.3s ease;
 }
 
 input[type="file"]:hover,
 input[type="text"]:hover {
-    border-color: #4f85f1;
+    border-color: #405DE6; /* Updated to Blue */
 }
 
 button.btn {
     width: 100%;
     padding: 12px;
-    background-color: #4f85f1;
+    background-color: #405DE6; /* Updated to Blue */
     color: white;
     font-size: 16px;
     border: none;
@@ -140,7 +141,7 @@ button.btn {
 }
 
 button.btn:hover {
-    background-color: #3d6ad6;
+    background-color: #393E46; /* Medium grayish blue */
 }
 
 /* Responsive Design */
@@ -161,4 +162,54 @@ button.btn:hover {
     header .logo p {
         font-size: 20px;
     }
+}
+
+/* File Input Custom Style */
+input[type="file"] {
+    width: 100%;
+    padding: 12px 16px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #EEEEEE; /* Light gray background */
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+input[type="file"]:hover {
+    border-color: #405DE6; /* Updated to Blue */
+    background-color: #D2E1FF; /* Light blue background */
+}
+
+input[type="file"]:focus {
+    outline: none;
+    border-color: #405DE6; /* Updated to Blue */
+    background-color: #D2E1FF; /* Light blue background */
+}
+
+/* File Input Label Style */
+label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #393E46; /* Medium grayish blue */
+    display: block;
+}
+
+/* Optional Styling: Customize the Button that Triggers File Selection */
+input[type="file"]::-webkit-file-upload-button {
+    background-color: #405DE6; /* Updated to Blue */
+    color: white;
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #393E46; /* Medium grayish blue */
 }
