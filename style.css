@@ -10,8 +10,7 @@
 
 body {
     margin-top: 10%;
-    background: #222831; /* Light gray background */
-    
+    background: #EEEEEE; /* Light gray background */
     color: #333;
     line-height: 1.5;
     font-size: 16px;
@@ -47,7 +46,7 @@ header h1 {
     margin: 40px auto;
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 10px 20px #405DE6;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
     padding: 30px;
 }
 
@@ -85,7 +84,7 @@ article {
     background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
-    width: 100%;
+    width: 45%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     margin-bottom: 20px;
