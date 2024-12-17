@@ -3,72 +3,88 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Image Encryption and Decryption</title>
+    <title>File & Folder Encryption</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@600&family=Rubik:wght@700&display=swap" rel="stylesheet">
-
-
 </head>
 <body>
+    <!-- Header -->
     <header class="head">
         <div class="logo">  
             <svg xmlns="http://www.w3.org/2000/svg" width="52" height="50" fill="white" class="bi bi-shield-lock-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm0 5a1.5 1.5 0 0 1 .5 2.915l.385 1.99a.5.5 0 0 1-.491.595h-.788a.5.5 0 0 1-.49-.595l.384-1.99A1.5 1.5 0 0 1 8 5z"/>
-              </svg>
-              <p>File<br>Fortify</p>
+            </svg>
+            <p>File<br>Fortify</p>
         </div>
-        <h1>Encrypt & DecGGG</h1>
+        <h1>Encrypt & Decrypt Files & Folders</h1>
     </header>
-        
-    
 
-    <!-- Input for uploading an image -->
-    <div class="container">
-    <article class="enc">
-        <h5>Image Encryption</h5>
-        <input class="inp" type="file" id="imageInput1" accept="image/*">
-        <br>
-        <br>
-        <label>Key:</label>
-        <input type="text" id="encryptionKey">
-        <br>
-        <button class= "btn" onclick="encryptAndDownload()">Encrypt</button>
-    </article>  
+    <!-- Clickable Headings -->
+    <div class="main-container">
+        <h3 class="toggle-heading" onclick="toggleSection('imageSection')">Image Encryption/Decryption</h3>
+        <div id="imageSection" class="hidden">
+            <div class="container">
+                <article class="enc">
+                    <h5>Image Encryption</h5>
+                    <input class="inp" type="file" id="imageInput1" accept="image/*">
+                    <label>Key:</label>
+                    <input type="text" id="encryptionKey">
+                    <button class="btn" onclick="encryptAndDownload()">Encrypt</button>
+                </article>  
 
-    <article class="dec">
-        <h5>Image Decryption</h5>
-        <input class="inp" type="file" id="imageInput2" accept="image/*">
-        <br>
-        <br>
-        <label>Key:</label>
-        <input type="text" id="decryptionKey">
-        <br>
-        <button class= "btn" onclick="decryptAndDisplay()">Decrypt</button>
-    </article>
-    </div>
-    
-
-    <!-- Original and encrypted image containers -->
-    
-    <div class="image">
-        <div class="img">
-            <h2>Decrypted image</h2>
-            <div class="org">
-                <!-- <img id="originalImage" src="#" alt="Original Image"> -->
+                <article class="dec">
+                    <h5>Image Decryption</h5>
+                    <input class="inp" type="file" id="imageInput2" accept="image/*">
+                    <label>Key:</label>
+                    <input type="text" id="decryptionKey">
+                    <button class="btn" onclick="decryptAndDisplay()">Decrypt</button>
+                </article>
             </div>
         </div>
-        
 
-        <!-- <div class="img">
-            <h2>Decrypted Image</h2>
-            <div class="dec"></div>
-            <br>
-            <button class= "btn" onclick="">Download</button>
-        </div> -->
+        <h3 class="toggle-heading" onclick="toggleSection('fileSection')">File Encryption/Decryption</h3>
+        <div id="fileSection" class="hidden">
+            <div class="container">
+                <article class="file-enc">
+                    <h5>File Encryption</h5>
+                    <input class="inp" type="file" id="fileInput1">
+                    <label>Key:</label>
+                    <input type="text" id="fileEncryptionKey">
+                    <button class="btn" onclick="encryptFile()">Encrypt File</button>
+                </article>
+
+                <article class="file-dec">
+                    <h5>File Decryption</h5>
+                    <input class="inp" type="file" id="fileInput2">
+                    <label>Key:</label>
+                    <input type="text" id="fileDecryptionKey">
+                    <button class="btn" onclick="decryptFile()">Decrypt File</button>
+                </article>
+            </div>
+        </div>
+
+        <h3 class="toggle-heading" onclick="toggleSection('folderSection')">Folder Encryption/Decryption</h3>
+        <div id="folderSection" class="hidden">
+            <div class="container">
+                <article class="folder-enc">
+                    <h5>Folder Encryption</h5>
+                    <input type="file" id="folderInput" webkitdirectory directory multiple>
+                    <label>Key:</label>
+                    <input type="text" id="folderEncryptionKey">
+                    <button class="btn" onclick="encryptFolder()">Encrypt Folder</button>
+                </article>
+
+                <article class="folder-dec">
+                    <h5>Folder Decryption</h5>
+                    <input type="file" id="folderInputDecrypt" webkitdirectory directory multiple>
+                    <label>Key:</label>
+                    <input type="text" id="folderDecryptionKey">
+                    <button class="btn" onclick="decryptFolder()">Decrypt Folder</button>
+                </article>
+            </div>
+        </div>
     </div>
-   
+
     <script src="script.js"></script>
 </body>
 </html>
