@@ -88,10 +88,116 @@ async function decryptAndDisplay() {
     }
 }
 
+
+//File 
 function toggleSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
         // Toggle the visibility of the selected section
         section.style.display = section.style.display === 'block' ? 'none' : 'block';
+    }
+}
+async function encryptFolderOrZip() {
+    const input = document.getElementById('folderZipInput');
+    const encryptionKeyInput = document.getElementById('folderEncryptionKey');
+
+    if (!input.files.length || !encryptionKeyInput.value) {
+        alert('Please select files or folders and enter an encryption key.');
+        return;
+    }
+
+    const encryptionKey = await textTo256BitKey(encryptionKeyInput.value);
+    const encryptionIv = crypto.getRandomValues(new Uint8Array(12));
+    localStorage.setItem('folderEncryptionIv', JSON.stringify(Array.from(encryptionIv)));
+
+    const zip = new JSZip();
+
+    for (const file of input.files) {
+        const filePath = file.webkitRelativePath || file.name;
+        zip.file(filePath, file);
+    }
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const zipArrayBuffer = await zipBlob.arrayBuffer();
+
+    // Encrypt ZIP content
+    const encryptedBuffer = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: encryptionIv },
+        encryptionKey,
+        zipArrayBuffer
+    );
+
+    const encryptedBlob = new Blob([encryptedBuffer], { type: 'application/octet-stream' });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(encryptedBlob);
+    downloadLink.download = 'encrypted_files.zip';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+async function decryptFolderOrZip() {
+    const input = document.getElementById('folderZipInputDecrypt');
+    const decryptionKeyInput = document.getElementById('folderDecryptionKey');
+
+    if (!input.files.length || !decryptionKeyInput.value) {
+        alert('Please select a ZIP file and enter a decryption key.');
+        return;
+    }
+
+    const decryptionKey = await textTo256BitKey(decryptionKeyInput.value);
+    const storedIv = localStorage.getItem('folderEncryptionIv');
+    const encryptionIv = storedIv ? new Uint8Array(JSON.parse(storedIv)) : null;
+
+    if (!encryptionIv) {
+        alert('Missing IV for decryption.');
+        return;
+    }
+
+    const file = input.files[0];
+    const encryptedBuffer = await file.arrayBuffer();
+
+    try {
+        // Decrypt the ZIP file
+        const decryptedBuffer = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: encryptionIv },
+            decryptionKey,
+            encryptedBuffer
+        );
+
+        // Load decrypted ZIP content using JSZip
+        const zip = await JSZip.loadAsync(decryptedBuffer);
+
+        // Collect all file promises
+        const newZip = new JSZip();
+        const filePromises = [];
+
+        zip.forEach((relativePath, file) => {
+            const filePromise = file.async('blob').then((content) => {
+                newZip.file(relativePath, content);
+            });
+            filePromises.push(filePromise);
+        });
+
+        // Wait for all file promises to resolve
+        await Promise.all(filePromises);
+
+        // Generate the new ZIP file
+        const newZipBlob = await newZip.generateAsync({ type: 'blob' });
+
+        // Create a download link for the new ZIP file
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(newZipBlob);
+        downloadLink.download = 'decrypted_files.zip';
+        downloadLink.textContent = 'Download Decrypted Folder';
+
+        // Trigger download
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+    } catch (error) {
+        console.error('Decryption failed:', error);
+        alert('Decryption failed. Invalid key or file.');
     }
 }
