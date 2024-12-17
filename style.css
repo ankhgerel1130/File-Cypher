@@ -1,74 +1,69 @@
-/* General Reset */
-* {
+/* Global Reset */
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
-    background-color: #f9fafc;
+    background: #f4f7fa;
     color: #333;
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
-/* Header */
-header.head {
-    background: #6c63ff;
+/* Header Styling */
+header {
+    background-color: #222;
     color: white;
-    padding: 20px;
+    padding: 40px 0;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    border-bottom: 4px solid #5b57e0;
-}
-
-header .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 header .logo p {
-    font-size: 18px;
-    font-family: 'Bungee', cursive;
-    line-height: 1.2;
+    font-size: 24px;
+    font-weight: 700;
     letter-spacing: 1px;
+    margin-top: 10px;
 }
 
 header h1 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 28px;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
     letter-spacing: 2px;
 }
 
 /* Main Container */
 .main-container {
-    width: 90%;
-    max-width: 800px;
-    margin: 30px auto;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    max-width: 960px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
 }
 
 /* Section Headings */
 .toggle-heading {
+    background-color: #4f85f1;
+    color: white;
+    padding: 16px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 8px;
     cursor: pointer;
-    background: #f0f4ff;
-    padding: 10px 15px;
-    font-size: 18px;
-    color: #6c63ff;
-    margin-top: 15px;
-    border-radius: 5px;
-    transition: background 0.3s;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
 }
 
 .toggle-heading:hover {
-    background: #e5e9ff;
+    background-color: #3d6ad6;
 }
 
 /* Hidden Sections */
@@ -79,68 +74,73 @@ header h1 {
 .container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 15px;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
+/* Article Styling */
 article {
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    background-color: #fff;
+    border-radius: 10px;
     padding: 20px;
-    width: 300px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 45%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
 }
 
 article:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 article h5 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #6c63ff;
-    font-family: 'Fredoka', sans-serif;
+    font-size: 22px;
+    color: #4f85f1;
+    font-weight: 600;
+    margin-bottom: 16px;
 }
 
+/* Form Elements */
 label {
-    display: block;
-    margin: 10px 0 5px;
-    font-weight: bold;
-    color: #555;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #777;
 }
 
 input[type="file"],
 input[type="text"] {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+    padding: 12px;
+    margin-top: 8px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    background: #f9fafc;
-    cursor: pointer;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover,
+input[type="text"]:hover {
+    border-color: #4f85f1;
 }
 
 button.btn {
-    display: block;
     width: 100%;
-    margin-top: 15px;
-    padding: 10px;
-    background: #6c63ff;
+    padding: 12px;
+    background-color: #4f85f1;
     color: white;
     font-size: 16px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 button.btn:hover {
-    background: #5b57e0;
+    background-color: #3d6ad6;
 }
 
 /* Responsive Design */
@@ -151,6 +151,14 @@ button.btn:hover {
     }
 
     article {
-        width: 90%;
+        width: 80%;
+    }
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    header .logo p {
+        font-size: 20px;
     }
 }
