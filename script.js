@@ -46,8 +46,7 @@ async function encryptAndDownload() {
         alert('Encryption failed. Please check the console for more details.');
     }
 }
-
-async function decryptAndDisplay() {
+async function decryptAndDownload() {
     const imageInput = document.getElementById('imageInput2');
     const decryptionKeyInput = document.getElementById('decryptionKey');
 
@@ -77,16 +76,22 @@ async function decryptAndDisplay() {
         );
 
         const decryptedBlob = new Blob([decryptedBuffer], { type: 'image/jpeg' });
-
-        const decryptedImage = new Image();
-        decryptedImage.src = URL.createObjectURL(decryptedBlob);
-
-        document.body.appendChild(decryptedImage);
+        
+        // Create a download link for the decrypted image
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(decryptedBlob);
+        downloadLink.download = 'decrypted_image.jpg';
+        
+        // Trigger the download
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     } catch (error) {
         console.error('Decryption failed:', error);
         alert('Decryption failed. Please check the console for more details.');
     }
 }
+
 
 
 // Encrypt File
