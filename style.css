@@ -10,7 +10,7 @@
 
 body {
     margin-top: 10%;
-    background: #EEEEEE; /* Light gray background */
+    background: #222831; /* Light gray background */
     
     color: #333;
     line-height: 1.5;
@@ -45,9 +45,9 @@ header h1 {
 .main-container {
     max-width: 960px;
     margin: 40px auto;
-    background: #ff0808;
+    background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px #405DE6;
     padding: 30px;
 }
 
